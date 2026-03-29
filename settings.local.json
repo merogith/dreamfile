@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(ls -lh \"D:\\\\indirme\"/00*.png)",
+      "Bash(ls -lh \"D:\\\\indirme/sprite\"*)",
+      "Bash(ls D:/indirme/*.png)",
+      "Bash(node -e \":*)",
+      "Bash(wc -l \"D:/indirme/Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(cut -d';' -f2 \"D:/indirme/Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(head -1 \"D:/indirme/Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(ls -la \"D:/indirme/\"*.csv)",
+      "Bash(ls \"C:/Users/Meriç/Desktop/pokemon battle/\"*.csv)",
+      "Bash(cut -d';' -f3 \"Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(cut -d';' -f4 \"Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(for f:*)",
+      "Bash(do cut:*)",
+      "Bash(done)",
+      "Bash(head -1 \"Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(wc -l \"Pokemon Table\\(pokemon builds\\).csv\")",
+      "Bash(tail -5 \"Pokemon Table\\(pokemon builds\\).csv\")",
+      "mcp__c1fc4002-5f49-5f9d-a4e5-93c4ef5d6a75__google_drive_search",
+      "WebFetch(domain:drive.google.com)"
+    ]
+  }
+}

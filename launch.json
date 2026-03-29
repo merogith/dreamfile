@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Pokemon Battle (Static HTML)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "D:/indirme", "-l", "3000", "--no-clipboard"],
+      "port": 3000
+    }
+  ]
+}
