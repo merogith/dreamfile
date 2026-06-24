@@ -1,133 +1,334 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dreamfile Win98</title>
+  <title>Celebra · Barista Übung</title>
   <style>
+    :root {
+      --bg: #f6efe7;
+      --card: #fffdfa;
+      --ink: #2c2017;
+      --muted: #7d6f62;
+      --line: #e6dccf;
+      --accent: #8a5a2b;
+      --accent-soft: #f0e3d2;
+      --good: #3f7d4f;
+    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: black;
-      color: white;
-      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.45;
     }
-    .desktop {
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
     }
-    .icon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #bfe3ff;
-      font-size: 12px;
-      margin: 20px;
+    header h1 {
+      font-size: 24px;
+      margin: 6px 0 2px;
+    }
+    header p { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 10px; }
+
+    .levels { display: flex; gap: 8px; flex-wrap: wrap; }
+    .level-btn {
+      flex: 1 1 0;
+      min-width: 56px;
+      padding: 10px 6px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      transition: .12s;
+    }
+    .level-btn small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .level-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .level-btn.active small { color: #f3e6d6; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
     }
-    .icon svg { width: 48px; height: 48px; }
-    .window {
-      background: #c0c0c0;
-      border: 2px solid black;
-      width: 640px;
-      max-width: 90vw;
-    }
-    .titlebar {
-      background: #000080;
-      color: white;
-      padding: 4px;
-      font-weight: bold;
+    .btn.secondary { background: var(--accent-soft); color: var(--accent); }
+    .btn.ghost { background: transparent; color: var(--accent); padding: 8px 4px; }
+    .btn:active { transform: translateY(1px); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .ticket-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+    .ticket-head .badge { font-size: 12px; color: var(--muted); }
+    .order-item {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-top: 1px dashed var(--line);
+      align-items: baseline;
     }
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .order-item:first-of-type { border-top: none; }
+    .qty { font-weight: 700; color: var(--accent); min-width: 28px; }
+    .order-name { font-size: 17px; font-weight: 600; }
+    .mods { color: var(--muted); font-size: 14px; }
+
+    .recipe {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: var(--accent-soft);
+      border-radius: 10px;
     }
-    .player {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%; /* 16:9 oranı */
-      height: 0;
-    }
-    .player video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
+    .recipe .what { font-size: 13px; color: var(--accent); font-style: italic; margin-bottom: 6px; }
+    .recipe ol { margin: 0; padding-left: 20px; }
+    .recipe li { margin: 3px 0; }
+    .recipe .mod-note { margin-top: 8px; font-size: 14px; color: var(--good); font-weight: 500; }
+
+    .empty { color: var(--muted); text-align: center; padding: 24px 8px; }
+    .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+    .study-item { padding: 14px 0; border-top: 1px solid var(--line); }
+    .study-item:first-child { border-top: none; }
+    .study-item h3 { margin: 0 0 4px; font-size: 16px; }
+    .tag { display: inline-block; font-size: 11px; color: var(--muted); background: #f1eae1; border-radius: 6px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div class="wrap">
+    <header>
+      <h1>☕ Celebra · Barista Übung</h1>
+      <p>Übe Bestellungen für deinen ersten Tag. Lies die Order, überlege wie du
+         jedes Getränk machst, dann zeig dir das Rezept zur Kontrolle.</p>
+    </header>
+
+    <div class="panel">
+      <div class="label">Schwierigkeit</div>
+      <div class="levels" id="levels"></div>
+    </div>
+
+    <div class="panel">
+      <div class="row">
+        <button class="btn" onclick="newOrder()">🔔 Neue Bestellung</button>
+        <button class="btn secondary" id="revealBtn" onclick="reveal()">👀 Rezepte zeigen</button>
+        <button class="btn ghost" onclick="toggleStudy()">📖 Alle Rezepte</button>
+      </div>
+    </div>
+
+    <div class="panel" id="ticket">
+      <div class="empty">Drück <b>Neue Bestellung</b> um zu starten.</div>
+    </div>
+
+    <div class="panel hidden" id="study">
+      <div class="label">Rezept-Spickzettel</div>
+      <div id="studyList"></div>
+    </div>
+
+    <p class="note">Die Rezepte sind übliche Café-Standards zur Orientierung.
+       Frag am ersten Tag nach den genauen Mengen/Tassen von Celebra.</p>
+  </div>
 
   <script>
-    const app = document.getElementById('app');
-    let ageOk = false;
-    let screen = 'age';
+    // ---- Menu data: each drink = what it is + how to make it ----
+    const MENU = [
+      { id:'espresso', name:'Espresso', what:'Reiner Espresso, kleine Tasse.',
+        recipe:['~9 g mahlen, dosieren, gleichmäßig tampen','1 Shot ziehen (~25 ml in ~25 s)','In vorgewärmter Espressotasse servieren'],
+        milk:false, shot:false, level:1 },
+      { id:'americano', name:'Kaffee / Americano', what:'Espresso mit heißem Wasser verlängert.',
+        recipe:['1 Espresso-Shot ziehen','Mit heißem Wasser auffüllen (~150 ml)','In großer Tasse servieren'],
+        milk:false, shot:true, level:1 },
+      { id:'cappuccino', name:'Cappuccino', what:'Espresso + Milch + dicker Schaum.',
+        recipe:['1 Shot in kleine Tasse','Milch cremig aufschäumen (viel Schaum)','Etwa ⅓ Espresso, ⅓ Milch, ⅓ Schaum'],
+        milk:true, shot:true, level:1 },
+      { id:'kakao', name:'Heiße Schokolade', what:'Schokolade mit heißer Milch.',
+        recipe:['Schokopulver/-sauce in die Tasse','Milch heiß aufschäumen','Einrühren bis glatt'],
+        milk:true, shot:false, level:1 },
+      { id:'tee', name:'Tee', what:'Aufgussbeutel/Blätter nach Wahl.',
+        recipe:['Teebeutel/Blätter in die Tasse oder Kanne','Mit heißem Wasser aufgießen','Ziehen lassen, servieren'],
+        milk:false, shot:false, level:1 },
 
-    function render() {
-      if (screen === 'age' && !ageOk) {
-        app.innerHTML = `
-          <div class="overlay">
-            <div class="window">
-              <div class="titlebar">Content Warning <button onclick="leaveSite()">×</button></div>
-              <div style="padding:10px; color:black; font-size:14px;">
-                <p>This site may include adult content, gore, and other material unsuitable for minors.</p>
-                <ul>
-                  <li>You must be at least 18 years old.</li>
-                  <li>By entering, you confirm you are legally permitted to view such content.</li>
-                </ul>
-                <button onclick="confirmAge()">Enter</button>
-              </div>
+      { id:'flatwhite', name:'Flat White', what:'Doppelter Espresso + samtige Mikroschaum-Milch.',
+        recipe:['2 Shots (doppelter Espresso) in die Tasse','Milch fein/seidig aufschäumen (wenig Schaum)','Einschenken – weniger Schaum als Cappuccino'],
+        milk:true, shot:true, level:2 },
+      { id:'latte', name:'Latte Macchiato', what:'Geschichtet: Milch, Espresso, Schaum.',
+        recipe:['Hohes Glas mit heißer aufgeschäumter Milch füllen','1 Shot langsam durch die Milch gießen','Schichten sichtbar lassen'],
+        milk:true, shot:true, level:2 },
+      { id:'milchkaffee', name:'Milchkaffee', what:'Großer Kaffee, halb Milch.',
+        recipe:['Große Tasse, ~½ Kaffee/Espresso','Mit heißer Milch auffüllen (~½)','Leicht schaumig oben'],
+        milk:true, shot:true, level:2 },
+
+      { id:'minze', name:'Frische Minze', what:'Frische Minzblätter, heißes Wasser.',
+        recipe:['Frische Minzblätter in die Tasse/Kanne','Mit heißem Wasser aufgießen','Kurz ziehen lassen'],
+        milk:false, shot:false, level:3 },
+      { id:'ingwer', name:'Frischer Ingwer', what:'Frische Ingwerscheiben, heißes Wasser.',
+        recipe:['Frischen Ingwer in Scheiben schneiden','In die Tasse geben, heißes Wasser','Ziehen lassen'],
+        milk:false, shot:false, level:3 },
+      { id:'ingwerminz', name:'Ingwer-Minztee', what:'Ingwer + Minze frisch aufgegossen.',
+        recipe:['Frischen Ingwer + frische Minze in die Kanne','Mit heißem Wasser aufgießen','Ziehen lassen, servieren'],
+        milk:false, shot:false, level:3 },
+
+      { id:'matcha', name:'Matcha Latte', what:'Matcha-Pulver mit aufgeschäumter Milch.',
+        recipe:['Matcha mit wenig heißem Wasser glatt rühren/quirlen','Heiße Milch aufschäumen','Matcha einfüllen, Milch darüber'],
+        milk:true, shot:false, level:4 },
+      { id:'rooibos', name:'Rooibos Latte', what:'Starker Rooibos mit Milch.',
+        recipe:['Rooibos stark aufbrühen','Heiße Milch aufschäumen','Tee in die Tasse, Milch darüber'],
+        milk:true, shot:false, level:4 },
+      { id:'chai', name:'Chai Latte', what:'Gewürz-Chai mit Milch.',
+        recipe:['Chai-Konzentrat/-Sirup in die Tasse','Heiße Milch aufschäumen','Aufgießen und verrühren'],
+        milk:true, shot:false, level:4 },
+      { id:'affogato', name:'Affogato', what:'Vanilleeis mit Espresso übergossen.',
+        recipe:['1 Kugel Vanilleeis in ein Glas/Tasse','1 heißen Espresso-Shot ziehen','Über das Eis gießen, sofort mit Löffel servieren'],
+        milk:false, shot:false, level:4 },
+    ];
+
+    // Food + smoothies appear at high difficulty — short prep note, no full recipe.
+    const EXTRAS = [
+      { id:'pizza_marg', name:'Pizza Margherita', what:'Im Ofen aufbacken bis heiß/knusprig.', level:5 },
+      { id:'pizza_salami', name:'Pizza Salami', what:'Im Ofen aufbacken bis heiß/knusprig.', level:5 },
+      { id:'sandwich', name:'Sandwich', what:'Belegtes Sandwich – ggf. kurz toasten/wärmen.', level:5 },
+      { id:'focaccia', name:'Focaccia', what:'Kurz aufbacken/wärmen, servieren.', level:5 },
+      { id:'smoothie_be', name:'Smoothie Banane-Erdbeer', what:'Banane, Erdbeere, Mandelmilch mixen.', level:5 },
+      { id:'smoothie_wf', name:'Smoothie Waldfrucht-Avocado', what:'Waldfrüchte, Avocado, Orange, Mandelmilch mixen.', level:5 },
+    ];
+
+    const MILKS = ['Hafermilch', 'Mandelmilch', 'Sojamilch'];
+
+    const LEVELS = {
+      1: { count:[1,1], extraChance:0,    label:'Basics' },
+      2: { count:[1,2], extraChance:0,    label:'Mehr Kaffee' },
+      3: { count:[2,3], extraChance:0.35, label:'+ Milch/Tee' },
+      4: { count:[3,4], extraChance:0.55, label:'+ Spezial' },
+      5: { count:[4,6], extraChance:0.8,  label:'Voll' },
+    };
+
+    // ---- State + deterministic-ish RNG (no Date.now) ----
+    let level = 1;
+    let order = null;
+    let revealed = false;
+    let seed = 1;
+    function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+    function pick(arr) { return arr[Math.floor(rnd() * arr.length)]; }
+    function range(min, max) { return min + Math.floor(rnd() * (max - min + 1)); }
+
+    // ---- Order generation ----
+    function newOrder() {
+      seed = (seed * 31 + 1009 + level) & 0x7fffffff; // vary each click
+      const cfg = LEVELS[level];
+      const drinkPool = MENU.filter(m => m.level <= level);
+      const extraPool = EXTRAS.filter(e => e.level <= level);
+      const n = range(cfg.count[0], cfg.count[1]);
+      const items = [];
+      for (let i = 0; i < n; i++) {
+        // At L5 ~30% chance an item is food/smoothie
+        if (extraPool.length && rnd() < 0.3) {
+          const e = pick(extraPool);
+          items.push({ kind:'extra', ref:e, qty:1, mods:[] });
+          continue;
+        }
+        const d = pick(drinkPool);
+        const mods = [];
+        if (d.milk && rnd() < cfg.extraChance) mods.push(pick(MILKS));
+        if (d.shot && rnd() < cfg.extraChance * 0.6) mods.push('extra Shot');
+        items.push({ kind:'drink', ref:d, qty:(level >= 4 && rnd() < 0.25) ? 2 : 1, mods });
+      }
+      order = items;
+      revealed = false;
+      renderTicket();
+    }
+
+    function reveal() { if (order) { revealed = true; renderTicket(); } }
+
+    // ---- Rendering ----
+    function renderLevels() {
+      const el = document.getElementById('levels');
+      el.innerHTML = Object.keys(LEVELS).map(l => `
+        <button class="level-btn ${l == level ? 'active' : ''}" onclick="setLevel(${l})">
+          ${l}<small>${LEVELS[l].label}</small>
+        </button>`).join('');
+    }
+    function setLevel(l) { level = l; renderLevels(); newOrder(); }
+
+    function modText(mods) {
+      return mods.length ? `<div class="mods">${mods.map(m => '· ' + m).join('  ')}</div>` : '';
+    }
+
+    function recipeBlock(it) {
+      if (it.kind === 'extra') {
+        return `<div class="recipe"><div class="what">${it.ref.what}</div></div>`;
+      }
+      const d = it.ref;
+      let modNote = '';
+      const milk = it.mods.find(m => m.endsWith('milch'));
+      if (milk) modNote += `${milk} statt normaler Milch aufschäumen. `;
+      if (it.mods.includes('extra Shot')) modNote += `Einen zusätzlichen Espresso-Shot dazu.`;
+      return `<div class="recipe">
+        <div class="what">${d.what}</div>
+        <ol>${d.recipe.map(s => `<li>${s}</li>`).join('')}</ol>
+        ${modNote ? `<div class="mod-note">↳ ${modNote}</div>` : ''}
+      </div>`;
+    }
+
+    function renderTicket() {
+      const el = document.getElementById('ticket');
+      if (!order) { el.innerHTML = '<div class="empty">Drück <b>Neue Bestellung</b> um zu starten.</div>'; return; }
+      el.innerHTML = `
+        <div class="ticket-head">
+          <b>🧾 Bestellung</b>
+          <span class="badge">Level ${level} · ${order.length} Artikel</span>
+        </div>
+        ${order.map(it => `
+          <div class="order-item">
+            <span class="qty">${it.qty}×</span>
+            <div style="flex:1">
+              <div class="order-name">${it.ref.name}</div>
+              ${modText(it.mods)}
+              ${revealed ? recipeBlock(it) : ''}
             </div>
-          </div>`;
-      }
-      else if (screen === 'home') {
-        app.innerHTML = `<div class="desktop">
-          <div class="icon" ondblclick="openFiles()">
-            <svg viewBox='0 0 64 64'><path fill='#ffd766' d='M6 18h20l4 5h28v27H6z'/><path fill='#e6b84e' d='M6 18h20l4 5H6z'/></svg>
-            <span>Dreamfile</span>
-          </div>
-        </div>`;
-      }
-      else if (screen === 'files') {
-        app.innerHTML = `<div class="desktop" style="grid-template-columns: repeat(4,1fr); justify-items:center; align-content:start; padding:40px;">
-          ${["notepad_10_25","video_12_25","filler_pdf","Computer","filler1","filler2","filler3","filler4"].map(label=>`
-            <div class='icon' ondblclick='showVideo()'>
-              <svg viewBox='0 0 64 64'><rect x='8' y='12' width='48' height='36' fill='#2a2a2a' stroke='#777'/><polygon points='26,20 44,30 26,40' fill='#fff'/></svg>
-              <span>${label}</span>
-            </div>`).join('')}
-        </div>`;
-      }
-      else if (screen === 'video') {
-        app.innerHTML += `
-          <div class="overlay" onclick="closeVideo(event)">
-            <div class="window" onclick="event.stopPropagation()">
-              <div class="titlebar">Media Player <button onclick="closeVideo(event)">×</button></div>
-              <div class="player">
-                <video controls autoplay>
-                  <source src="prototype.mp4" type="video/mp4">
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
-          </div>`;
+          </div>`).join('')}
+        ${!revealed ? '<p class="note">Überlege wie du jedes Getränk machst, dann „Rezepte zeigen".</p>' : ''}
+      `;
+    }
+
+    // ---- Study / cheat-sheet ----
+    let studyOpen = false;
+    function toggleStudy() {
+      studyOpen = !studyOpen;
+      const s = document.getElementById('study');
+      s.classList.toggle('hidden', !studyOpen);
+      if (studyOpen && !s.dataset.built) {
+        document.getElementById('studyList').innerHTML = MENU.map(d => `
+          <div class="study-item">
+            <h3>${d.name}<span class="tag">L${d.level}+</span></h3>
+            <div class="what" style="color:var(--muted);font-style:italic;font-size:13px;margin-bottom:4px;">${d.what}</div>
+            <ol style="margin:0;padding-left:20px;">${d.recipe.map(r => `<li>${r}</li>`).join('')}</ol>
+          </div>`).join('');
+        s.dataset.built = '1';
       }
     }
 
-    function confirmAge(){ ageOk = true; screen = 'home'; render(); }
-    function leaveSite(){ window.location.href = 'about:blank'; }
-    function openFiles(){ screen = 'files'; render(); }
-    function showVideo(){ screen = 'video'; render(); }
-    function closeVideo(e){ screen = 'files'; render(); }
-
-    render();
+    // init
+    renderLevels();
+    newOrder();
   </script>
 </body>
 </html>
